@@ -1,6 +1,7 @@
 package jansen.thomas.journal;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,16 +18,22 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton AddButton = findViewById(R.id.floatingActionButtonAdd);
         AddButton.setOnClickListener(new addButtonOnClickListener());
-        ListView.setOnItemClickListener(new ListItemClickListener());
-        ListView.setOnItemLongClickListener(new ListOnItemLongClickListener());
 
         EntryDatabase db = EntryDatabase.getInstance(getApplicationContext());
+
+        Cursor cursor = EntryDatabase.selectAll(db);
+        EntryAdapter adapter = new EntryAdapter(this, R.layout.entry_row, cursor);
+        ListView listview = findViewById(R.id.ListViewMain);
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new ListItemClickListener());
+        listview.setOnItemLongClickListener(new ListOnItemLongClickListener());
     }
 
     public class addButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(MainActivity.this, InputActivity.class);
+            startActivity(intent);
         }
     }
 

@@ -1,5 +1,6 @@
 package jansen.thomas.journal;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,11 +13,11 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createTable =  "CREATE TABLE entries (id integer primary key, title varchar(255)," +
-                " content text, mood text, date datetime DEFAULT(getdate()));";
+        String createTable =  "CREATE TABLE entries (_id integer PRIMARY KEY AUTOINCREMENT NOT NULL, title varchar(255)," +
+                " content text, mood text, date datetime NOT NULL DEFAULT(GETDATE()));";
         sqLiteDatabase.execSQL(createTable);
 
-        String insert = "INSERT INTO entries (title, content, mood) VALUES ('Eerste entry', 'Lief dagboek', ':(');";
+        String insert = "INSERT INTO entries (title, content, mood, date) VALUES ('Eerste entry van mij', 'Lief dagboek', 'sad');";
         sqLiteDatabase.execSQL(insert);
     }
 
@@ -32,16 +33,26 @@ public class EntryDatabase extends SQLiteOpenHelper {
     }
 
 
-    public EntryDatabase getInstance(Context context) {
+    public static EntryDatabase getInstance(Context context) {
         if (EntryDatabase.instance == null) {
-            EntryDatabase.instance = new EntryDatabase(context, getDatabaseName(), null, 1);
+            EntryDatabase.instance = new EntryDatabase(context, "entries", null, 1);
         }
         return  EntryDatabase.instance;
     }
 
-    private Cursor selectAll(EntryDatabase instance) {
+    public static Cursor selectAll(EntryDatabase instance) {
         SQLiteDatabase table = instance.getWritableDatabase();
-        Cursor cursor = table.rawQuery("SELECT * FROM entries", null);
-        return cursor;
+        return table.rawQuery("SELECT * FROM entries", null);
+    }
+
+    public static void insert(EntryDatabase instance, JournalEntry entry) {
+        SQLiteDatabase table = instance.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("title", entry.getTitle());
+        values.put("content", entry.getContent());
+        values.put("mood", entry.getMood());
+//        values.put("date", entry.getTimestamp());
+        table.insert("entries", null, values);
     }
 }
