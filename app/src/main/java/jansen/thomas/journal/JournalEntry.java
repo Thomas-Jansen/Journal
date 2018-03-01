@@ -1,16 +1,15 @@
 package jansen.thomas.journal;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class JournalEntry implements Serializable{
     private int _id;
     private String title;
     private String content;
     private String mood;
-    private Date timestamp;
+    private String timestamp;
 
-    public JournalEntry(int id, String title, String content, String mood, Date timestamp) {
+    public JournalEntry(int id, String title, String content, String mood, String timestamp) {
         this._id = id;
         this.title = title;
         this.content = content;
@@ -34,7 +33,7 @@ public class JournalEntry implements Serializable{
         return mood;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 

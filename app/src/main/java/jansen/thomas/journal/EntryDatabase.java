@@ -14,11 +14,8 @@ public class EntryDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable =  "CREATE TABLE entries (_id integer PRIMARY KEY AUTOINCREMENT NOT NULL, title varchar(255)," +
-                " content text, mood text, date datetime NOT NULL DEFAULT(GETDATE()));";
+                " content text, mood text, date text);";
         sqLiteDatabase.execSQL(createTable);
-
-        String insert = "INSERT INTO entries (title, content, mood, date) VALUES ('Eerste entry van mij', 'Lief dagboek', 'sad');";
-        sqLiteDatabase.execSQL(insert);
     }
 
     @Override
@@ -52,7 +49,12 @@ public class EntryDatabase extends SQLiteOpenHelper {
         values.put("title", entry.getTitle());
         values.put("content", entry.getContent());
         values.put("mood", entry.getMood());
-//        values.put("date", entry.getTimestamp());
+        values.put("date", entry.getTimestamp());
         table.insert("entries", null, values);
+    }
+
+    public static void deleteEntry(long deleteID) {
+        SQLiteDatabase table = instance.getWritableDatabase();
+        table.delete("entries", "_id = ?", new String[] {String.valueOf(deleteID)});
     }
 }

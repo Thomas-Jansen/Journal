@@ -1,5 +1,6 @@
 package jansen.thomas.journal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class InputActivity extends AppCompatActivity {
@@ -24,6 +28,8 @@ public class InputActivity extends AppCompatActivity {
         EditText newContent = findViewById(R.id.editTextContentNew);
         EditText newMood = findViewById(R.id.editTextMood);
         Button addButton = findViewById(R.id.buttonSubmit);
+
+        newContent.setMovementMethod(null);
 
         newTitle.addTextChangedListener(new TitleChangedListener());
         newContent.addTextChangedListener(new ContentChangedListener());
@@ -73,10 +79,14 @@ public class InputActivity extends AppCompatActivity {
     public class ButtonOnclickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Date date = new Date();
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date today = Calendar.getInstance().getTime();
+            String date = df.format(today);
             JournalEntry newEntry = new JournalEntry(0, title, content, mood, date);
             EntryDatabase db = EntryDatabase.getInstance(getApplicationContext());
             EntryDatabase.insert(db, newEntry);
+            Intent intentInput = new Intent(InputActivity.this, MainActivity.class);
+            startActivity(intentInput);
         }
     }
 }
