@@ -16,30 +16,33 @@ public class MainActivity extends AppCompatActivity {
     EntryDatabase db;
     EntryAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton AddButton = findViewById(R.id.floatingActionButtonAdd);
-        AddButton.setOnClickListener(new addButtonOnClickListener());
-
+//      Get dataBase, send it to EntryAdapter and use the adapter
         db = EntryDatabase.getInstance(getApplicationContext());
         Cursor cursor = EntryDatabase.selectAll(db);
         adapter = new EntryAdapter(this, R.layout.entry_row, cursor);
         ListView listview = findViewById(R.id.ListViewMain);
         listview.setAdapter(adapter);
+
+//      Several onCLickListeners
         listview.setOnItemClickListener(new ListItemClickListener());
         listview.setOnItemLongClickListener(new ListOnItemLongClickListener());
+        FloatingActionButton AddButton = findViewById(R.id.floatingActionButtonAdd);
+        AddButton.setOnClickListener(new addButtonOnClickListener());
     }
 
+//  Update the listView on resume
     @Override
     protected void onResume() {
         super.onResume();
         updateData();
     }
 
+//  When add button is pressed, go to Input
     public class addButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//  When an item is clicked, send its information to DetailActivity
     public class ListItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//  When an item is long pressed, open a dialogbox and ask for confirmation to delete the item
     public class ListOnItemLongClickListener implements AdapterView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//  A function to update the listView
     private void updateData() {
         Cursor newCursor = EntryDatabase.selectAll(db);
         adapter.swapCursor(newCursor);

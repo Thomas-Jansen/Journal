@@ -15,28 +15,35 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class InputActivity extends AppCompatActivity {
+
+//  Variables to save
     String title = "";
     String content = "";
     String mood = "";
+    String date = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
+//      Find the views
         EditText newTitle = findViewById(R.id.editTextTitleNew);
         EditText newContent = findViewById(R.id.editTextContentNew);
         EditText newMood = findViewById(R.id.editTextMood);
         Button addButton = findViewById(R.id.buttonSubmit);
 
+//      Prevent the content textView from scrolling horizontally
         newContent.setMovementMethod(null);
 
+//      Set onChangeListeners on textViews
         newTitle.addTextChangedListener(new TitleChangedListener());
         newContent.addTextChangedListener(new ContentChangedListener());
         newMood.addTextChangedListener(new MoodChangedListener());
         addButton.setOnClickListener(new ButtonOnclickListener());
     }
 
+//  onChangeListeners:
     public class TitleChangedListener implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -76,15 +83,20 @@ public class InputActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {}
     }
 
+//  When submit button is pressed, send als received texts
     public class ButtonOnclickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+
+//          Get current date and time and format it to a String
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date today = Calendar.getInstance().getTime();
-            String date = df.format(today);
+            date = df.format(today);
             JournalEntry newEntry = new JournalEntry(0, title, content, mood, date);
             EntryDatabase db = EntryDatabase.getInstance(getApplicationContext());
             EntryDatabase.insert(db, newEntry);
+
+//          Return to main after submitting data
             Intent intentInput = new Intent(InputActivity.this, MainActivity.class);
             startActivity(intentInput);
         }

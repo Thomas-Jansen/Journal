@@ -51,6 +51,5 @@
         android:paddingTop="4dp"
         android:text="Content"
         android:textAlignment="viewStart"
-        android:maxLines = "30"
         android:scrollbars = "vertical"/>
 </LinearLayout>

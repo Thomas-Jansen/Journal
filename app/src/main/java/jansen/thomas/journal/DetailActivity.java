@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
+//  When this activity is loaded, fill all textViews with the corresponding text from intent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +28,8 @@ public class DetailActivity extends AppCompatActivity {
         contentView.setText(content);
         moodView.setText(mood);
         dateView.setText(date);
+
+//      Set textView for content scrollable
         contentView.setMovementMethod(new ScrollingMovementMethod());
     }
 }

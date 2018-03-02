@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+// An adapter to take the entry_row template, fill the textViews and send it to main.
 public class EntryAdapter extends ResourceCursorAdapter{
 
     public EntryAdapter(Context context, int layout, Cursor cursor) {
