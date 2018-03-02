@@ -22,7 +22,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 //  When a new version of the app is installed, delete the old table and create a new one
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String dropTable = "DROP TABLE entries;";
+        String dropTable = "DROP TABLE IF EXISTS entries;";
         sqLiteDatabase.execSQL(dropTable);
         onCreate(sqLiteDatabase);
     }
